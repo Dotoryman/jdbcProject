@@ -41,9 +41,9 @@ public class BoardMain { // 로그인기능 넣기 - user리스트 사용, board
 				board.setBoardContent(content);
 
 				if (dao.add(board)) {
-					System.out.println("처리성공");
+					System.out.println("등록이 정상적으로 완료되었습니다");
 				} else {
-					System.out.println("처리실패");
+					System.out.println("등록에 실패하였습니다");
 				}
 
 			} else if (menu == 2) {// 2. 삭제
@@ -99,6 +99,6 @@ public class BoardMain { // 로그인기능 넣기 - user리스트 사용, board
 				break;
 			}
 		}
-		System.out.println("end of program");
+		System.out.println("정상적으로 종료되었습니다");
 	}
 }
