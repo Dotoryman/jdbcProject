@@ -5,16 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.yedam.Dao;
+
 
 public class BoardDao {
 	Connection conn;
 	PreparedStatement psmt;
 	ResultSet rs;
 	String sql;
-	//0. close 클래스
+
+	// 0. close 클래스
 	private void close() {
 		try {
 			if (conn != null) {
@@ -29,6 +32,31 @@ public class BoardDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	// 0. login check. id & pass => 로그인하기,
+	// 아이디와비밀번호는 데이터베이스에서 가져오기
+	// + '작성자' 칸에 로그인한 아이디가 들어가도록
+	public boolean loginCheck(String id, String pw) {
+		sql = "select * from tbl_users where user_id=? and user_pw=?";
+		conn = Dao.getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, pw);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				System.out.println("로그인에 성공했습니다");
+				return false; //아이디가 있다는 의미
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		System.out.println("아이디 또는 비밀번호가 틀렸습니다");
+		return true;
 	}
 
 	// 1. 등록
@@ -56,13 +84,13 @@ public class BoardDao {
 	}
 
 	// 2. 삭제
-	public boolean remove(String no) {
+	public boolean remove(int no) {
 		sql = "delete from tbl_board" + " where brd_no = ?";
 		conn = Dao.getConnect();
 		try {
 
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, no);
+			psmt.setInt(1, no);
 
 			int r = psmt.executeUpdate();
 			if (r > 0) {
@@ -130,18 +158,18 @@ public class BoardDao {
 	}
 
 	// 5. 상세조회(글번호검색으로 1건 상세 조회)
-	public BoardVO search(int boardNo) {
+	public BoardVO search(int no) {
 		sql = "select * from tbl_board where brd_no = ?";
 		String sql1 = " update tbl_board" + " set click_cnt = click_cnt + 1" + " where brd_no = ?";
 		conn = Dao.getConnect();
 
 		try {
 			psmt = conn.prepareStatement(sql1);
-			psmt.setInt(1, boardNo);
+			psmt.setInt(1, no);
 			rs = psmt.executeQuery();
 
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, boardNo);
+			psmt.setInt(1, no);
 			rs = psmt.executeQuery();
 
 			if (rs.next()) { // if 한건 조회가 된다면

@@ -3,13 +3,22 @@ package com.yedam.board;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class BoardMain { // 로그인기능 넣기 - user리스트 사용, boardDao에 넣기
 	public static void main(String[] args) {
 
 		BoardDao dao = new BoardDao();
 		Scanner scn = new Scanner(System.in);
 		int menu = 0;
-
+		//로그인기능, 아이디&비번으로
+		boolean run = true;
+		while(run) {
+			System.out.println("관리자 계정을 입력하세요");
+			String id = scn.nextLine();
+			System.out.println("비밀번호를 입력하세요");
+			String pw = scn.nextLine();
+			run = dao.loginCheck(id, pw);
+		}
 		while (true) {
 			System.out.println("........................게시판 기능........................");
 			System.out.println("=======================================================");
@@ -39,7 +48,7 @@ public class BoardMain { // 로그인기능 넣기 - user리스트 사용, board
 
 			} else if (menu == 2) {// 2. 삭제
 				System.out.printf("정보를 삭제하려는 글번호 를 입력하세요");
-				String no = scn.nextLine();
+				int no = Integer.parseInt(scn.nextLine());
 
 				if (dao.remove(no)) {
 					System.out.println("삭제가 정상적으로 완료되었습니다");
