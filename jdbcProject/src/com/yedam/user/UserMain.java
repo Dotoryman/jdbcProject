@@ -11,8 +11,9 @@ public class UserMain {
 		int menu = 0;
 
 		while (true) {
+			
 			System.out.println("=======================================================");
-			System.out.println("1 . 추가   2 . 조회  3 . 수정  4 . 삭제  5 . 목록  6 . 종료");
+			System.out.println("1 . 추가 \n2 . 조회 \n3 . 수정 \n4 . 삭제 \n5 . 목록 \n6 . 종료");
 			System.out.println("=======================================================");
 			System.out.println("선택 > ");
 			menu = scn.nextInt();
